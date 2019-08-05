@@ -1,0 +1,42 @@
+version: "3" 
+services:
+    nginx:
+        image: nginx:0.0.1
+        container_name: nginx
+        depends_on:
+            - ask
+        networks:
+            - webnet
+        ports:
+            - "80:80"
+    ask:
+        image: flask-ask:0.0.0
+        container_name: ask
+        depends_on:
+            - pydocs
+        networks:
+            webnet:
+                aliases:
+                    - ask
+    pydocs:
+        image: pydocs:0.0.0
+        container_name: pydocs
+        networks:
+            webnet:
+                aliases:
+                    - pydocs
+        depends_on:
+            - redis
+    redis:
+        image: redis
+        container_name: redis
+        ports:
+          - "6379:6379"
+            #        deploy:
+            #          placement:
+            #            constraints: [node.role == manager]
+        command: redis-server --appendonly yes
+        networks:
+          - webnet
+networks:
+    webnet:
