@@ -3,8 +3,11 @@ FROM python:3.6
 COPY pydocs/ /flask-pydocs/pydocs/
 COPY requirements.txt /flask-pydocs/requirements.txt
 
-WORKDIR /flask-pydocs
+WORKDIR /flask-pydocs/
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt &&\
+    pip install gunicorn
 
-CMD python pydocs/app.py
+WORKDIR pydocs/
+
+CMD gunicorn --access-logfile - --bind 0.0.0.0:5000 app:app 
