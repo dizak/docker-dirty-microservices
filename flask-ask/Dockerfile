@@ -6,4 +6,4 @@ RUN pip install flask requests
 
 WORKDIR /code
 
-CMD python ask.py
+CMD gunicorn --access-logfile - --bind 0.0.0.0:5001 ask:app
