@@ -27,9 +27,15 @@ app = Flask(__name__)
 setup_connector(app)
 
 @app.route('/ask/str/<text>', methods=['GET', 'POST'])
-def ask(text):
+def ask_str(text):
     with get_connector(app) as conn:
         result = conn.get(f'http://pydocs:5000/pydocs/str/{text}')
+    return str(result.content)
+
+@app.route('/ask/int/<text>', methods=['GET', 'POST'])
+def ask_int(text):
+    with get_connector(app) as conn:
+        result = conn.get(f'http://pydocs:5000/pydocs/int/{text}')
     return str(result.content)
 
 if __name__ == '__main__':
